@@ -1,0 +1,933 @@
+/*
+Theme Name: Carbon Pro
+Theme URI: https://github.com/tryadvocacy/carbon-pro
+Author: Franz Stephan
+Author URI: https://tryadvocacy.github.io
+Description: A high-performance, resource-efficient WordPress theme inspired by the IBM Carbon Design System.
+Version: 1.1.4
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: carbon-pro
+Tags: one-column, custom-colors, custom-menu, featured-images, full-width-template, threaded-comments, translation-ready
+Requires at least: 6.0
+Requires PHP: 7.0
+*/
+
+:root {
+  --carbon-white: #ffffff;
+  --carbon-g10: #f4f4f4;
+  --carbon-g90: #393939;
+  --carbon-g100: #161616;
+  --carbon-blue-60: #0f62fe;
+  --carbon-blue-70: #0043ce;
+  --font-plex: 'IBM Plex Sans', sans-serif;
+}
+
+body {
+  font-family: var(--font-plex);
+  background-color: var(--carbon-white);
+  color: var(--carbon-g100);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.carbon-header {
+  min-height: 3rem;
+  height: auto;
+  background-color: var(--carbon-g100);
+  color: white;
+  display: flex;
+  flex-wrap: wrap; /* Allow header itself to wrap if logo + nav too wide */
+  align-items: stretch;
+  padding: 0 0 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #393939;
+}
+
+.carbon-logo {
+  display: flex;
+  align-items: center;
+  padding-right: 1rem;
+  max-width: 250px; /* Limit logo/title width */
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.carbon-logo a {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.carbon-header a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+}
+
+.carbon-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  padding: 0 1rem;
+  height: 100%;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.carbon-menu-toggle:hover {
+  background-color: #353535;
+}
+
+.carbon-nav {
+  margin-left: 1rem;
+  flex-grow: 1;
+  display: flex;
+  height: 100%;
+}
+
+.carbon-header-search {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  height: 100%;
+  border-left: 1px solid #393939;
+  max-width: 200px;
+  flex-shrink: 0;
+}
+
+.carbon-header-search form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.carbon-header-search input[type="search"] {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 0.875rem;
+  width: 100%;
+  outline: none;
+}
+
+.carbon-header-search input[type="submit"] {
+  display: none;
+}
+
+/* Base Nav Container */
+.carbon-nav {
+  margin-left: 1rem;
+  flex-grow: 1;
+  display: flex;
+  height: 100%;
+}
+
+/* Target only top-level ul and main menu container */
+.carbon-nav > ul,
+.carbon-nav > .menu {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  height: 100% !important;
+  align-items: stretch !important;
+  flex-wrap: nowrap !important;
+}
+
+.carbon-nav ul li {
+  position: relative;
+  list-style-type: none !important;
+}
+
+/* Base Submenu Styling */
+.carbon-nav ul ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--carbon-g90);
+  min-width: 220px;
+  flex-direction: column !important;
+  height: auto !important;
+  z-index: 1001;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+  border: 1px solid #525252;
+  padding: 0 !important;
+  margin: 0 !important;
+  
+  /* Transition properties for "roll down" effect */
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: max-height 0.2s cubic-bezier(0, 0, 0.38, 0.9), opacity 0.15s ease, visibility 0.15s;
+  display: flex !important; /* Keep it flex but hidden via height/opacity */
+}
+
+/* Nested submenus fly out to the right */
+.carbon-nav ul ul ul {
+  top: 0;
+  left: 100%;
+}
+
+/* Visibility triggers */
+.carbon-nav ul li:hover > ul,
+.carbon-nav ul li:focus-within > ul,
+.carbon-nav ul li.is-open > ul {
+  max-height: 1000px; /* Large enough to contain any menu */
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Chevron Indicators */
+.carbon-nav ul li.menu-item-has-children > a:after,
+.carbon-nav ul li.page_item_has_children > a:after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 0.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='white'%3E%3Cpath d='M16 22L6 12 7.4 10.6 16 19.2 24.6 10.6 26 12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform 0.2s ease;
+}
+
+/* Top-level Chevron rotation when open */
+.carbon-nav > ul > li.is-open > a:after {
+  transform: rotate(180deg);
+}
+
+/* Sub-level Chevron (pointing right by default) */
+.carbon-nav ul ul li.menu-item-has-children > a:after,
+.carbon-nav ul ul li.page_item_has_children > a:after {
+  transform: rotate(-90deg);
+}
+
+/* Sub-level Chevron rotation when open (points down) */
+.carbon-nav ul ul li.is-open > a:after {
+  transform: rotate(0deg);
+}
+
+.carbon-nav ul ul li {
+  width: 100%;
+  height: auto !important;
+}
+
+.carbon-nav ul ul li a {
+  padding: 0 1rem !important;
+  border: none !important;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: space-between; /* Put chevron at the end */
+  height: 40px !important; /* Carbon height */
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  color: #f4f4f4 !important;
+}
+
+.carbon-nav ul ul li a:hover {
+  background-color: #4d4d4d !important;
+}
+
+.carbon-nav ul li,
+.carbon-nav .menu li {
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style-type: none !important;
+}
+
+.carbon-nav ul li a,
+.carbon-nav .menu li a {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #c6c6c6;
+  text-decoration: none;
+  transition: all 0.1s;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 1rem;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  white-space: nowrap;
+}
+
+.carbon-nav ul li a:hover,
+.carbon-nav .menu li a:hover {
+  color: white;
+  background-color: #353535;
+}
+
+.carbon-nav ul li.current-menu-item a,
+.carbon-nav .menu li.current-menu-item a {
+  color: white;
+  background-color: #353535;
+  border-bottom-color: var(--carbon-blue-60);
+}
+
+@media (max-width: 1024px) {
+  .carbon-header {
+    padding-right: 0;
+  }
+
+  .carbon-menu-toggle {
+    display: flex;
+    order: 2;
+  }
+
+  .carbon-logo {
+    flex-grow: 1;
+  }
+
+  .carbon-nav {
+    position: fixed;
+    top: 3rem;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 3rem);
+    background-color: var(--carbon-g100);
+    flex-direction: column;
+    display: none;
+    border-top: 1px solid #393939;
+    z-index: 999;
+    margin-left: 0;
+  }
+
+  .carbon-nav.is-open {
+    display: flex;
+  }
+
+  .carbon-nav ul,
+  .carbon-nav .menu {
+    flex-direction: column !important;
+    height: auto !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .carbon-nav ul li,
+  .carbon-nav .menu li {
+    width: 100%;
+    height: auto !important;
+  }
+
+  .carbon-nav ul li a,
+  .carbon-nav .menu li a {
+    padding: 1rem 2rem;
+    height: auto;
+    border-top: none;
+    border-bottom: 1px solid #393939;
+    border-left: 4px solid transparent;
+  }
+
+  .carbon-nav ul li.current-menu-item a,
+  .carbon-nav .menu li.current-menu-item a {
+    border-bottom-color: #393939;
+    border-left-color: var(--carbon-blue-60);
+  }
+
+  .carbon-header-search {
+    display: none;
+  }
+
+  /* Mobile Submenu Styling */
+  .carbon-nav ul ul {
+    position: static !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-left: 1px solid #393939 !important;
+    margin: 0 !important;
+    padding-left: 1rem !important;
+    background-color: #262626 !important;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+
+  .carbon-nav ul li.is-open > ul {
+    max-height: 2000px; /* Allow more space for deeply nested mobile menus */
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .carbon-nav ul li ul li a {
+    padding: 0.75rem 1rem !important;
+    justify-content: flex-start !important;
+  }
+
+  .carbon-nav ul li.menu-item-has-children > a:after,
+  .carbon-nav ul li.page_item_has_children > a:after {
+    margin-left: auto !important;
+  }
+
+  /* Reset all rotations on mobile then apply specific ones */
+  .carbon-nav ul li.menu-item-has-children > a:after,
+  .carbon-nav ul li.page_item_has_children > a:after {
+    transform: rotate(0deg) !important;
+  }
+
+  .carbon-nav ul li.is-open > a:after {
+    transform: rotate(180deg) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .carbon-container {
+    padding: 0 1rem;
+  }
+}
+
+.carbon-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.carbon-post {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 2rem 0;
+}
+
+.carbon-post h2 a {
+  color: var(--carbon-g100);
+  text-decoration: none;
+  font-weight: 300;
+  font-size: 2rem;
+}
+
+.carbon-post h2 a:hover {
+  color: var(--carbon-blue-60);
+}
+
+.carbon-meta {
+  font-size: 0.75rem;
+  color: #525252;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.carbon-meta a {
+  color: var(--carbon-blue-60);
+  text-decoration: none;
+}
+
+.carbon-meta a:hover {
+  text-decoration: underline;
+}
+
+/* Category/Tag chips */
+.carbon-categories, .carbon-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.carbon-categories a, .carbon-tags a {
+  background-color: #e0e0e0;
+  color: #161616;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.carbon-categories a:hover, .carbon-tags a:hover {
+  background-color: #d1d1d1;
+}
+
+.carbon-meta-more {
+  transition: transform 0.2s;
+  border-radius: 0;
+  color: #525252;
+}
+
+.carbon-meta-more:hover {
+  background-color: #e5e5e5 !important;
+  color: #161616;
+}
+
+.carbon-btn {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--carbon-blue-60);
+  color: white;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.carbon-btn:hover {
+  background-color: var(--carbon-blue-70);
+}
+
+.carbon-footer {
+  background-color: var(--carbon-g100);
+  color: #f4f4f4;
+  padding: 0;
+  font-size: 0.875rem;
+  margin-top: 4rem;
+}
+
+.widget {
+  margin-bottom: 2rem;
+}
+
+.widget-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.widget ul {
+  list-style: none;
+  padding: 0;
+}
+
+.widget li {
+  margin-bottom: 0.5rem;
+}
+
+.widget a {
+  color: #f4f4f4;
+  text-decoration: none;
+}
+
+.widget a:hover {
+  text-decoration: underline;
+}
+
+.carbon-hero {
+  background-color: var(--carbon-g100);
+  color: white;
+  padding: 6rem 2rem;
+  margin: -2rem -2rem 4rem -2rem;
+}
+
+.carbon-hero h1 {
+  font-size: 4rem;
+  font-weight: 300;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.1;
+  max-width: 900px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.carbon-hero p {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #c6c6c6;
+  max-width: 700px;
+  line-height: 1.4;
+  margin-bottom: 2.5rem;
+}
+
+.carbon-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: background-color 0.2s, color 0.2s;
+  margin-left: 1rem;
+}
+
+.carbon-btn-secondary:hover {
+  background-color: white;
+  color: var(--carbon-g100);
+}
+
+.carbon-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+.carbon-card {
+  border: 1px solid #e0e0e0;
+  padding: 2rem;
+  transition: background-color 0.2s;
+}
+
+.carbon-card:hover {
+  background-color: var(--carbon-g10);
+}
+
+.carbon-card h3 {
+  font-weight: 400;
+  margin-top: 0;
+}
+
+.carbon-404 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.carbon-404 h1 {
+  font-size: 8rem;
+  font-weight: 300;
+  margin: 0;
+  line-height: 1;
+  color: var(--carbon-blue-60);
+}
+
+.carbon-404 h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 1rem 0 2rem 0;
+}
+
+.carbon-404 p {
+  font-size: 1.125rem;
+  font-weight: 300;
+  color: #525252;
+  max-width: 500px;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.carbon-404 .carbon-search-form {
+  min-height: 4rem; /* Increased height */
+  background-color: #f4f4f4;
+  border-bottom: 2px solid #8d8d8d;
+}
+
+.carbon-404 .carbon-search-form:focus-within {
+  border-bottom-color: var(--carbon-blue-60);
+}
+
+.carbon-404 .search-btn-text {
+  display: inline; /* Show text on 404 page */
+}
+
+.carbon-404 .search-submit {
+  background-color: var(--carbon-blue-60);
+  color: white;
+  padding: 0 2rem;
+}
+
+.carbon-404 .search-submit:hover {
+  background-color: var(--carbon-blue-70);
+  color: white;
+}
+
+.carbon-404 .search-field {
+  font-size: 1.125rem;
+}
+
+/* Search Form Styles */
+.carbon-header-search {
+  display: flex;
+  align-items: stretch;
+}
+
+.carbon-search-form {
+  display: flex;
+  align-items: stretch;
+  background-color: #f4f4f4;
+  min-height: 3rem;
+  width: 100%;
+  color: #161616;
+}
+
+.carbon-search-form label {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.carbon-search-form input {
+  background: transparent;
+  border: none;
+  color: #161616;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  outline: none;
+  width: 100%;
+  height: 100%;
+}
+
+.carbon-search-form button {
+  background: transparent;
+  border: none;
+  color: #525252;
+  cursor: pointer;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  transition: all 0.1s;
+}
+
+.carbon-search-form button:hover {
+  color: #161616;
+  background-color: #e5e5e5;
+}
+
+.search-btn-text {
+  display: none;
+  margin-left: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+/* Header specific overrides to keep it compact and dark */
+.carbon-header-search .carbon-search-form {
+  width: auto;
+  min-height: 100%;
+  background-color: #393939;
+}
+
+.carbon-header-search .carbon-search-form input {
+  width: 150px;
+  transition: width 0.2s;
+  color: white;
+}
+
+.carbon-header-search .carbon-search-form button {
+  color: #c6c6c6;
+}
+
+.carbon-header-search .carbon-search-form button:hover {
+  color: white;
+  background-color: #4d4d4d;
+}
+
+.carbon-header-search .carbon-search-form input:focus {
+  width: 250px;
+  background-color: #4d4d4d;
+}
+
+.search-clear {
+  background: transparent;
+  border: none;
+  color: #c6c6c6;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s;
+  height: 100%;
+  outline: none;
+}
+
+.search-clear:hover {
+  color: white;
+  background-color: #4d4d4d;
+}
+
+.search-clear svg {
+  pointer-events: none;
+}
+
+.carbon-search-results-header {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+}
+
+.carbon-search-results-header h1 {
+  font-size: 3rem;
+  font-weight: 300;
+  margin: 0;
+}
+
+.carbon-search-results-header h1 span {
+  font-weight: 600;
+  color: var(--carbon-blue-60);
+}
+
+.carbon-search-results-header p {
+  color: #525252;
+  font-size: 1.125rem;
+  margin-top: 0.5rem;
+}
+
+.carbon-no-results {
+  padding: 4rem 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carbon-no-results p {
+  font-size: 1.25rem;
+  color: #525252;
+  max-width: 600px;
+}
+
+.carbon-pagination {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.carbon-highlight {
+  background-color: #f1c21b; /* Carbon yellow */
+  color: #161616;
+  padding: 0 2px;
+}
+
+.screen-reader-text {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
+}
+
+/* Comments Area */
+.carbon-comments {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.comments-title,
+.comment-reply-title {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 3rem 0;
+}
+
+.comment-list .comment {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.comment-list .comment:last-child {
+  border-bottom: none;
+}
+
+.comment-body {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.comment-author .avatar {
+  border-radius: 0; /* Carbon is square */
+}
+
+.comment-meta {
+  margin-bottom: 0.5rem;
+}
+
+.comment-author .fn {
+  font-weight: 600;
+  font-style: normal;
+}
+
+.comment-metadata {
+  font-size: 0.875rem;
+  color: #525252;
+}
+
+.comment-content {
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.reply {
+  margin-top: 1rem;
+}
+
+.comment-reply-link {
+  font-size: 0.875rem;
+  color: var(--carbon-blue-60);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.comment-reply-link:hover {
+  text-decoration: underline;
+}
+
+/* Comment Form */
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 600px;
+}
+
+.comment-form p {
+  margin: 0;
+}
+
+.comment-form label {
+  display: block;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  color: #525252;
+}
+
+.comment-form input[type="text"],
+.comment-form input[type="email"],
+.comment-form input[type="url"],
+.comment-form textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #f4f4f4;
+  border: none;
+  border-bottom: 1px solid #8d8d8d;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.comment-form input:focus,
+.comment-form textarea:focus {
+  border-bottom-color: var(--carbon-blue-60);
+}
+
+.comment-form .form-submit {
+  margin-top: 1rem;
+}
