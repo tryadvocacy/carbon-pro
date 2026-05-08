@@ -20,3 +20,7 @@ Carbon Pro is a lightweight, high-performance WordPress theme that follows the I
 3. Activate.
 4. Go to Settings > Reading to set your static front page.
 5. Go to Appearance > Menus to set up your primary navigation.
+
+## Demo Site
+View a temporary demo implementation here, thanks to InstaWP for hosting the site:
+https://reliable-partridge-bf7301.instawp.co/
