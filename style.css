@@ -4,13 +4,17 @@ Theme URI: https://github.com/tryadvocacy/carbon-pro
 Author: Franz Stephan
 Author URI: https://tryadvocacy.github.io
 Description: A high-performance, resource-efficient WordPress theme inspired by the IBM Carbon Design System.
-Version: 1.1.4
+Version: 1.1.6
+Tested up to: 6.7
+Requires at least: 6.0
+Requires PHP: 7.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: carbon-pro
-Tags: one-column, custom-colors, custom-menu, featured-images, full-width-template, threaded-comments, translation-ready
-Requires at least: 6.0
-Requires PHP: 7.0
+Tags: one-column, custom-background, custom-colors, custom-header, custom-menu, featured-images, full-width-template, threaded-comments, translation-ready, block-styles
+
+Copyright 2026 Franz Stephan
+Carbon Pro is distributed under the terms of the GNU GPL v2 or later.
 */
 
 :root {
@@ -20,7 +24,7 @@ Requires PHP: 7.0
   --carbon-g100: #161616;
   --carbon-blue-60: #0f62fe;
   --carbon-blue-70: #0043ce;
-  --font-plex: 'IBM Plex Sans', sans-serif;
+  --font-plex: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 body {
@@ -30,6 +34,50 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
 }
+
+/* --- WordPress Core Classes --- */
+.alignleft {
+  float: left;
+  margin: 0.5rem 1.5rem 0.5rem 0;
+}
+.alignright {
+  float: right;
+  margin: 0.5rem 0 0.5rem 1.5rem;
+}
+.aligncenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.wp-caption {
+  margin-bottom: 1.5rem;
+  max-width: 100%;
+}
+.wp-caption-text {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+.gallery-caption {
+  font-size: 0.875rem;
+  color: #666;
+}
+.sticky {
+  border: 1px solid var(--carbon-blue-60);
+  padding: 1rem;
+  background-color: #f8faff;
+}
+.bypostauthor {
+  border-left: 3px solid var(--carbon-blue-60);
+}
+
+.header-image img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+/* ------------------------------ */
 
 .carbon-header {
   min-height: 3rem;
@@ -183,6 +231,7 @@ body {
 /* Visibility triggers */
 .carbon-nav ul li:hover > ul,
 .carbon-nav ul li:focus-within > ul,
+.carbon-nav ul li.focus > ul,
 .carbon-nav ul li.is-open > ul {
   max-height: 1000px; /* Large enough to contain any menu */
   opacity: 1;
@@ -816,6 +865,35 @@ body {
   word-wrap: normal !important;
 }
 
+.skip-link {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+.skip-link:focus {
+  background-color: var(--carbon-g100, #161616);
+  color: var(--carbon-white, #ffffff);
+  border: 2px solid var(--carbon-blue-60, #0f62fe);
+  clip: auto !important;
+  clip-path: none;
+  display: block;
+  font-family: var(--font-plex);
+  font-size: 0.875rem;
+  font-weight: 500;
+  height: auto;
+  left: 1rem;
+  top: 1rem;
+  padding: 0.75rem 1.5rem;
+  position: absolute;
+  text-decoration: none;
+  width: auto;
+  z-index: 100000;
+  overflow: visible;
+  margin: 0;
+  outline: none;
+}
+
 /* Comments Area */
 .carbon-comments {
   margin-top: 4rem;
@@ -931,3 +1009,42 @@ body {
 .comment-form .form-submit {
   margin-top: 1rem;
 }
+
+/* Keyboard Accessibility - Visible Focus Indicators (IBM Carbon Style) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--carbon-blue-60, #0f62fe) !important;
+  outline-offset: 2px !important;
+}
+
+/* Ensure focus class elements are visible */
+.carbon-nav ul li.focus > a {
+  outline: 2px solid var(--carbon-blue-60, #0f62fe) !important;
+  outline-offset: -2px !important;
+}
+
+/* Accessibility - Content Area Links (Theme Review Requirement) */
+.entry-content a,
+.comment-content a,
+.hero-content a {
+  color: var(--carbon-blue-60, #0f62fe);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.15s ease, text-decoration-thickness 0.15s ease;
+}
+
+.entry-content a:hover,
+.comment-content a:hover,
+.hero-content a:hover,
+.entry-content a:focus,
+.comment-content a:focus,
+.hero-content a:focus {
+  color: #0043ce; /* IBM Carbon Blue 70 for higher contrast */
+  text-decoration-thickness: 2px;
+}
+

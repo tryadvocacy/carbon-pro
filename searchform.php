@@ -7,7 +7,7 @@
 <form role="search" method="get" class="carbon-search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
     <label>
         <span class="screen-reader-text"><?php echo _x( 'Search for:', 'label', 'carbon-pro' ); ?></span>
-        <input type="search" class="search-field" placeholder="<?php echo esc_attr_x( 'Search &hellip;', 'placeholder', 'carbon-pro' ); ?>" value="<?php echo get_search_query(); ?>" name="s" />
+        <input type="search" class="search-field" placeholder="<?php echo esc_attr_x( 'Search &hellip;', 'placeholder', 'carbon-pro' ); ?>" value="<?php echo esc_attr( get_search_query() ); ?>" name="s" />
     </label>
     <button type="button" class="search-clear" aria-label="<?php echo esc_attr__( 'Clear search', 'carbon-pro' ); ?>" style="display: <?php echo get_search_query() ? 'flex' : 'none'; ?>;">
         <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"></path></svg>
@@ -17,26 +17,3 @@
         <span class="search-btn-text"><?php echo esc_html_x( 'Search', 'submit button', 'carbon-pro' ); ?></span>
     </button>
 </form>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchForms = document.querySelectorAll('.carbon-search-form');
-    
-    searchForms.forEach(form => {
-        const input = form.querySelector('.search-field');
-        const clearBtn = form.querySelector('.search-clear');
-        
-        if (!input || !clearBtn) return;
-        
-        input.addEventListener('input', function() {
-            clearBtn.style.display = this.value.length > 0 ? 'flex' : 'none';
-        });
-        
-        clearBtn.addEventListener('click', function() {
-            input.value = '';
-            input.focus();
-            this.style.display = 'none';
-        });
-    });
-});
-</script>

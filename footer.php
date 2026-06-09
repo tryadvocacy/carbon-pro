@@ -1,9 +1,9 @@
 
 <footer class="carbon-footer">
-    <?php if (is_active_sidebar('footer-1')) : ?>
+    <?php if (is_active_sidebar('carbon-pro-footer')) : ?>
         <div style="max-width: 1200px; margin: 0 auto; padding: 2rem; border-bottom: 1px solid #393939;">
             <div class="carbon-grid-3">
-                <?php dynamic_sidebar('footer-1'); ?>
+                <?php dynamic_sidebar('carbon-pro-footer'); ?>
             </div>
         </div>
     <?php endif; ?>

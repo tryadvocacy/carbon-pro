@@ -8,7 +8,7 @@ get_header(); ?>
 <main id="primary" class="site-main carbon-container">
 
 <div class="carbon-search-results-header">
-    <h1><?php printf( esc_html__( 'Search Results for: %s', 'carbon-pro' ), '<span>' . get_search_query() . '</span>' ); ?></h1>
+    <h1><?php printf( esc_html__( 'Search Results for: %s', 'carbon-pro' ), '<span>' . esc_html( get_search_query() ) . '</span>' ); ?></h1>
     <p><?php
         global $wp_query;
         printf( _n( '%d result found', '%d results found', $wp_query->found_posts, 'carbon-pro' ), number_format_i18n( $wp_query->found_posts ) );
